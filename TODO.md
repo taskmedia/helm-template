@@ -10,4 +10,6 @@
   git push -u origin gh-pages
   ```
 
+1. Delete demo chart.
+
 1. Delete this [TODO.md](../../delete/main/TODO.md) file.
