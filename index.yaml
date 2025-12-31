@@ -14,6 +14,16 @@ entries:
   other-demo:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-12-31T16:14:52.334177762Z"
+    description: hello world
+    digest: fd7415d5b48b122f39e54dc4af535032cdadcf323f2d30d7d3e371604a7e8fcf
+    name: other-demo
+    type: application
+    urls:
+    - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.2.0/other-demo-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-12-31T16:06:45.023909819Z"
     description: A Helm chart for Kubernetes
     digest: acfd40df7538c75e960ba990c5d105d7e690fb000d0ea1a3694e6ff5e3c4eb6c
@@ -22,4 +32,4 @@ entries:
     urls:
     - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.1.0/other-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-31T16:06:45.023920258Z"
+generated: "2025-12-31T16:14:52.334191237Z"
