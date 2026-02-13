@@ -78,16 +78,9 @@ jobs:
           git show origin/main:README.md > README.md
           if grep -q '<!-- start charts -->' README.md; then
             awk -v table="$CHART_TABLE" '
-              /<!-- start charts -->/ {
-                print $0
-                print table
-                next
-              }
-              /<!-- end charts -->/ {
-                print $0
-                next
-              }
-              { print $0 }
+              /<!-- start charts -->/ { print; print table; in_charts=1; next }
+              /<!-- end charts -->/ { in_charts=0; print; next }
+              !in_charts { print }
             ' README.md > temp_readme.md
             mv temp_readme.md README.md
           else
