@@ -3,6 +3,16 @@ entries:
   demo:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-13T14:02:35.870725262Z"
+    description: A Helm chart for Kubernetes
+    digest: e10421bada4eaeb355cfef0c60247647ab8fb514d771e43c36e9ca8c2b7d46a4
+    name: demo
+    type: application
+    urls:
+    - https://github.com/taskmedia/helm-template/releases/download/demo-0.1.4/demo-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T13:58:38.080845069Z"
     description: A Helm chart for Kubernetes
     digest: 0569a0f314928bffafa6181f287db1518936b445e9f86a06a805786385eb55f3
@@ -52,4 +62,4 @@ entries:
     urls:
     - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.1.0/other-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-13T13:58:38.080858946Z"
+generated: "2026-02-13T14:02:35.870741652Z"
