@@ -28,17 +28,28 @@ jobs:
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.7.0
 
+      - name: Determine target branch
+        id: target
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            tb="${{ github.event.repository.default_branch }}"
+          else
+            tb="${{ github.event.before }}"
+          fi
+          echo "target branch is ${tb}"
+          echo "branch=${tb}" >> "$GITHUB_OUTPUT"
+
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          changed=$(ct list-changed --target-branch ${{ steps.target.outputs.branch }})
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+        run: ct lint --target-branch ${{ steps.target.outputs.branch }}
 
       - name: Create kind cluster
         if: steps.list-changed.outputs.changed == 'true'
@@ -46,4 +57,4 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch ${{ github.event.repository.default_branch }}
+        run: ct install --target-branch ${{ steps.target.outputs.branch }}
