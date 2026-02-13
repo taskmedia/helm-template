@@ -30,6 +30,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Run chart-releaser
+        id: cr
         uses: helm/chart-releaser-action@v1.7.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -46,6 +47,7 @@ jobs:
 
       - name: Generate chart table with yq
         id: chart_table
+        if: steps.cr.outputs.released == 'true'
         uses: mikefarah/yq@master
         with:
           cmd: >-
@@ -61,24 +63,30 @@ jobs:
             ' index.yaml
 
       - name: Update gh-pages README
+        if: steps.cr.outputs.released == 'true'
         shell: bash
         run: |
           CHART_TABLE="${{ steps.chart_table.outputs.result }}"
-          awk -v table="$CHART_TABLE" '
-          /<!-- start charts -->/ {
+            if [ ! -f README.md ]; then
+              echo "README.md not found, creating a dummy README.md."
+              printf "# Charts\n\n<!-- start charts -->\n<!-- end charts -->\n" > README.md
+            fi
+            awk -v table="$CHART_TABLE" '
+            /<!-- start charts -->/ {
               print $0
               print table
               next
-          }
-          /<!-- end charts -->/ {
+            }
+            /<!-- end charts -->/ {
               print $0
               next
-          }
-          { print $0 }
-          ' README.md > temp_readme.md
-          mv temp_readme.md README.md
+            }
+            { print $0 }
+            ' README.md > temp_readme.md
+            mv temp_readme.md README.md
 
       - name: Commit and push README update
+        if: steps.cr.outputs.released == 'true'
         run: |
           git add README.md
           if ! git diff --cached --quiet; then
