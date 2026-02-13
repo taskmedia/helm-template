@@ -54,6 +54,16 @@ entries:
   other-demo:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-13T14:28:57.046806846Z"
+    description: hello world
+    digest: 731dd808d769df3361267bb2b0587891becbe5e9cfb358513d8219336b2aefc8
+    name: other-demo
+    type: application
+    urls:
+    - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.2.2/other-demo-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T13:19:29.704733982Z"
     description: hello world
     digest: 7233271175bd4869de3d3c600e6822c23e89b9a5c548f48c105c8bb1c62cac02
@@ -82,4 +92,4 @@ entries:
     urls:
     - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.1.0/other-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-13T14:23:01.163104558Z"
+generated: "2026-02-13T14:28:57.046829558Z"
