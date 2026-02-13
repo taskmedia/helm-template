@@ -36,3 +36,54 @@ jobs:
         with:
           mark_as_latest: false
           skip_existing: true
+
+      # create or update README.md file in gh-pages with list of charts with latest versions
+
+      # checkout gh-pages branch
+      - run: |
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+
+      - name: Generate chart table with yq
+        id: chart_table
+        uses: mikefarah/yq@master
+        with:
+          cmd: >-
+            yq -r '
+              "| Chart | Version | Description | Released |\n|------|---------|-------------|----------|",
+              (
+                .entries
+                | to_entries[]
+                | .key as $chart
+                | .value[0]
+                | "| \($chart) | [\(.version)](\(.urls[0])) | \(.description) | \(.created | split(\"T\")[0]) |"
+              )
+            ' index.yaml
+
+      - name: Update gh-pages README
+        shell: bash
+        run: |
+          CHART_TABLE="${{ steps.chart_table.outputs.result }}"
+          awk -v table="$CHART_TABLE" '
+          /<!-- start charts -->/ {
+              print $0
+              print table
+              next
+          }
+          /<!-- end charts -->/ {
+              print $0
+              next
+          }
+          { print $0 }
+          ' README.md > temp_readme.md
+          mv temp_readme.md README.md
+
+      - name: Commit and push README update
+        run: |
+          git add README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: update chart list in gh-pages README [skip ci]"
+            git push origin gh-pages
+          else
+            echo "No changes to commit."
+          fi
