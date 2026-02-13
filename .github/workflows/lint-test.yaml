@@ -28,30 +28,37 @@ jobs:
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.7.0
 
-      - name: Determine target branch
-        id: target
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            tb="${{ github.event.repository.default_branch }}"
-          else
-            # Create a temporary branch from the before commit
-            git branch temp-base-branch ${{ github.event.before }}
-            tb="temp-base-branch"
-          fi
-          echo "target branch is ${tb}"
-          echo "branch=${tb}" >> "$GITHUB_OUTPUT"
-
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ steps.target.outputs.branch }})
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            ct_origin="origin"
+            ct_target_branch="${{ github.event.repository.default_branch }}"
+          else
+            # As ct does not support comparing against a commit, we need to fake a branch with a remote
+            ct_origin="ci"
+            ct_target_branch="temp-base-branch"
+            git branch $ct_origin/$ct_target_branch ${{ github.event.before }}
+          fi
+
+          changed=$(ct list-changed \
+              --remote $ct_origin \
+              --target-branch $ct_target_branch
+            )
+
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
+
+            echo "ct_origin=$ct_origin" >> "$GITHUB_OUTPUT"
+            echo "ct_target_branch=$ct_target_branch" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ steps.target.outputs.branch }}
+        run: |
+          ct lint \
+            --remote ${{ steps.list-changed.outputs.ct_origin }} \
+            --target-branch ${{ steps.list-changed.outputs.ct_target_branch }}
 
       - name: Create kind cluster
         if: steps.list-changed.outputs.changed == 'true'
@@ -59,4 +66,7 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch ${{ steps.target.outputs.branch }}
+        run: |
+          ct install \
+            --remote ${{ steps.list-changed.outputs.ct_origin }} \
+            --target-branch ${{ steps.list-changed.outputs.ct_target_branch }}
