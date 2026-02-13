@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'charts/**'
+      - "charts/**"
 
 jobs:
   release:
@@ -49,7 +49,7 @@ jobs:
 
       - name: Generate chart table with yq
         id: chart_table
-        if: steps.cr.outputs.released == 'true'
+        if: steps.cr.outputs.changed_charts != ''
         uses: mikefarah/yq@master
         with:
           cmd: >-
@@ -65,7 +65,7 @@ jobs:
             ' index.yaml
 
       - name: Update gh-pages README
-        if: steps.cr.outputs.released == 'true'
+        if: steps.cr.outputs.changed_charts != ''
         shell: bash
         run: |
           CHART_TABLE="${{ steps.chart_table.outputs.result }}"
@@ -90,7 +90,7 @@ jobs:
           fi
 
       - name: Commit and push README update
-        if: steps.cr.outputs.released == 'true'
+        if: steps.cr.outputs.changed_charts != ''
         run: |
           git add README.md
           if ! git diff --cached --quiet; then
