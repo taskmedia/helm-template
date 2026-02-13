@@ -67,23 +67,25 @@ jobs:
         shell: bash
         run: |
           CHART_TABLE="${{ steps.chart_table.outputs.result }}"
-            if [ ! -f README.md ]; then
-              echo "README.md not found, creating a dummy README.md."
-              printf "# Charts\n\n<!-- start charts -->\n<!-- end charts -->\n" > README.md
-            fi
+          echo "Copying README.md from main branch to ensure it is up to date."
+          git show origin/main:README.md > README.md
+          if grep -q '<!-- start charts -->' README.md; then
             awk -v table="$CHART_TABLE" '
             /<!-- start charts -->/ {
-              print $0
-              print table
-              next
+                print $0
+                print table
+                next
             }
             /<!-- end charts -->/ {
-              print $0
-              next
+                print $0
+                next
             }
             { print $0 }
             ' README.md > temp_readme.md
             mv temp_readme.md README.md
+          else
+            echo "No <!-- start charts --> tag found in README.md, skipping chart table update."
+          fi
 
       - name: Commit and push README update
         if: steps.cr.outputs.released == 'true'
