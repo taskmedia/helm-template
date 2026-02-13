@@ -34,7 +34,9 @@ jobs:
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             tb="${{ github.event.repository.default_branch }}"
           else
-            tb="${{ github.event.before }}"
+            # Create a temporary branch from the before commit
+            git branch temp-base-branch ${{ github.event.before }}
+            tb="temp-base-branch"
           fi
           echo "target branch is ${tb}"
           echo "branch=${tb}" >> "$GITHUB_OUTPUT"
