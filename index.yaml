@@ -64,6 +64,24 @@ entries:
   other-demo:
   - apiVersion: v2
     appVersion: 1.16.1
+    created: "2026-02-14T07:16:29.008201725Z"
+    description: hello world
+    digest: d7a75a88362a86e1ba02821ae491551c67d05958428eaf0908efbfab38d4dad7
+    icon: https://media.task.media/images/logo.png
+    keywords:
+    - test
+    maintainers:
+    - name: fty4
+      url: https://github.com/fty4
+    name: other-demo
+    sources:
+    - https://github.com/taskmedia
+    type: application
+    urls:
+    - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.2.4/other-demo-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
+    appVersion: 1.16.1
     created: "2026-02-14T07:06:06.36069082Z"
     description: hello world
     digest: 3306d6ce25b1959361b1ebea762e854481bd14f7009da079b01417bc29b3ff32
@@ -112,4 +130,4 @@ entries:
     urls:
     - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.1.0/other-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-14T07:06:06.360737437Z"
+generated: "2026-02-14T07:16:29.008240789Z"
