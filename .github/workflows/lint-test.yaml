@@ -43,7 +43,4 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: |
-          ct install \
-            --remote ${{ steps.list-changed.outputs.ct_origin }} \
-            --target-branch ${{ steps.list-changed.outputs.ct_target_branch }}
+        run: ct install
