@@ -2,9 +2,6 @@ name: Lint and Test Charts
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
   lint-test:
@@ -31,26 +28,9 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            ct_origin="origin"
-            ct_target_branch="${{ github.event.repository.default_branch }}"
-          else
-            # As ct does not support comparing against a commit, we need to fake a branch with a remote
-            ct_origin="ci"
-            ct_target_branch="temp-base-branch"
-            git branch $ct_origin/$ct_target_branch ${{ github.event.before }}
-          fi
-
-          changed=$(ct list-changed \
-              --remote $ct_origin \
-              --target-branch $ct_target_branch
-            )
-
+          changed=$(ct list-changed)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
-
-            echo "ct_origin=$ct_origin" >> "$GITHUB_OUTPUT"
-            echo "ct_target_branch=$ct_target_branch" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run chart-testing (lint)
