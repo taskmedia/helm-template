@@ -22,3 +22,12 @@ version: 0.1.8
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
+
+keywords:
+  - test
+maintainers:
+  - name: fty4
+    url: https://github.com/fty4
+sources:
+  - https://github.com/taskmedia
+icon: https://media.task.media/images/logo.png
