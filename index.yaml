@@ -3,6 +3,24 @@ entries:
   demo:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-23T01:24:24.22340417Z"
+    description: A Helm chart for Kubernetes
+    digest: 189894671075bb5551aa623cffdcfe87bb5ceedbba3ea7e08d96c206809ab2f6
+    icon: https://media.task.media/images/logo.png
+    keywords:
+    - test
+    maintainers:
+    - name: fty4
+      url: https://github.com/fty4
+    name: demo
+    sources:
+    - https://github.com/taskmedia
+    type: application
+    urls:
+    - https://github.com/taskmedia/helm-template/releases/download/demo-0.1.9/demo-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-14T07:00:45.269696617Z"
     description: A Helm chart for Kubernetes
     digest: 0770e99ed8e58682ab89fe24a55a5618ef531282b59732cdacb3622f0f75be83
@@ -130,4 +148,4 @@ entries:
     urls:
     - https://github.com/taskmedia/helm-template/releases/download/other-demo-0.1.0/other-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-14T07:16:29.008240789Z"
+generated: "2026-02-23T01:24:24.223431821Z"
